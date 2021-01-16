@@ -26,6 +26,22 @@
             }
         };
 
+        var levels = 
+        [{
+            repeat: 0
+        },
+        {
+            repeat: 2
+        },
+        {
+            repeat: 7
+        },
+        {
+            repeat: 10
+        }];
+
+
+
         var player;
         var wm; // wash machine
 
@@ -35,8 +51,16 @@
         var score = 0;
         var scoreText;
 
-        var hasStar = false;
+        var level = 0;
+
+        var hasStars = 0;
         var washStarted = false;
+
+        var timer = 0;
+        var timerText;
+
+        var gameOver = false;
+
 
         var game = new Phaser.Game(config);
 
@@ -44,15 +68,13 @@
             this.load.image('sky', 'assets/img/sky.png');
             this.load.image('ground', 'assets/img/platform.png');
             this.load.image('star', 'assets/img/star.png');
-            
+
             this.load.image('washing-machine', 'assets/img/washing-machine.png');
 
 
             this.load.spritesheet('dude', 'assets/img/dude.png', { frameWidth: 32, frameHeight: 48 });
             this.load.spritesheet('dude-with-star', 'assets/img/dude-with-star.png', { frameWidth: 32, frameHeight: 48 });
             this.load.spritesheet('wash-cycle', 'assets/img/wash-cycle.png', { frameWidth: 191, frameHeight: 209 });
-
-
         }
 
 
@@ -70,25 +92,28 @@
             player = this.physics.add.sprite(100, 200, 'dude');
             player.setBounce(0.2);
             player.setCollideWorldBounds(true);
-    
+
             wm = this.physics.add.sprite(100, 700, 'washing-machine');
             wm.setBounce(0.2);
             wm.setCollideWorldBounds(true);
             wm.setImmovable(true);
 
 
-            
+
             cursors = this.input.keyboard.addKeys(
-                {up:Phaser.Input.Keyboard.KeyCodes.W,
-                down:Phaser.Input.Keyboard.KeyCodes.S,
-                left:Phaser.Input.Keyboard.KeyCodes.A,
-                right:Phaser.Input.Keyboard.KeyCodes.D});
+                {
+                    up: Phaser.Input.Keyboard.KeyCodes.W,
+                    down: Phaser.Input.Keyboard.KeyCodes.S,
+                    left: Phaser.Input.Keyboard.KeyCodes.A,
+                    right: Phaser.Input.Keyboard.KeyCodes.D
+                });
 
             // cursors = this.input.keyboard.createCursorKeys();
 
+            
             stars = this.physics.add.group({
                 key: 'star',
-                repeat: 0,
+                repeat: levels[level].repeat,
                 setXY: { x: 12, y: 0, stepX: 70 }
             });
 
@@ -98,7 +123,7 @@
 
             });
 
-                        
+
             this.anims.create({
                 key: 'left',
                 frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
@@ -157,16 +182,63 @@
             this.physics.add.collider(player, wm, dropStarStartWash);
 
             this.physics.add.collider(stars, platforms);
-
             this.physics.add.overlap(player, stars, collectStar, null, this);
+
+            timerText = this.add.text(430, 555, 'aa', { fontSize: '32px', fill: '#000' });
+
+
+
+            nextLevel = () => {
+                                
+                if ((level + 1 ) == levels.length) {
+                    // you win , let washer continue
+                    scoreText.setText('Score: ' + score + ' - GAME OVER, YOU WIN');
+                    gameOver = true; // should stop timer
+
+                } else {
+
+                    washStarted = false;
+                    level++;
+
+                    score += 1000;
+                    scoreText.setText('Score: ' + score);
+
+                    stars = this.physics.add.group({
+                        key: 'star',
+                        repeat: levels[level].repeat,
+                        setXY: { x: 12, y: 0, stepX: 70 }
+                    });
+
+                    stars.children.iterate(function (child) {
+
+                        child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+
+                    });
+
+                    this.physics.add.collider(stars, platforms);
+                    this.physics.add.overlap(player, stars, collectStar, null, this);
+
+                }
+
+                
+
+            }
+
 
         }
 
-        function update() {
+        function update(time, delta) {
 
             var starAnim = '';
 
-            if (hasStar) {
+            if (!gameOver) {
+                timer += delta;
+                timerText.setText('Time: ' + Math.round(timer, 2));
+            }
+            
+
+            
+            if (hasStars > 0) {
                 starAnim = '-star';
             }
 
@@ -178,7 +250,7 @@
             else if (cursors.right.isDown) {
                 player.setVelocityX(160);
 
-                player.anims.play('right' + starAnim , true);
+                player.anims.play('right' + starAnim, true);
             }
             else {
                 player.setVelocityX(0);
@@ -189,31 +261,41 @@
             if (cursors.up.isDown && player.body.touching.down) {
                 player.setVelocityY(-330);
             }
+
+
+
         }
 
         function collectStar(player, star) {
             star.disableBody(true, true);
-            hasStar = true;
-            
+            hasStars++;
+
             score += 10;
             scoreText.setText('Score: ' + score);
         }
 
         function dropStarStartWash(player, wm) {
-            
 
-            if (!washStarted && hasStar) {
-                hasStar = false;
+
+            if (!washStarted && hasStars > 0 && stars.countActive(true) === 0) {
+                hasStars = 0;
                 washStarted = true;
-                
+
                 score += 100;
                 scoreText.setText('Score: ' + score);
 
-                wm.anims.play('wash-cycle-anim' , true);
+                wm.anims.play('wash-cycle-anim', true);
 
-            }            
+                setTimeout(function(){
+                    wm.anims.stop();
+                    nextLevel();                    
+                }, 2200);
+
+            }
+
         }
 
+       
     </script>
 
 </body>
