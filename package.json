@@ -4,11 +4,15 @@
   "description": "Appliance hell the game",
   "main": "index.js",
   "scripts": {
+    "start": "http-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "TakesTheBiscuit",
   "license": "ISC",
   "dependencies": {
     "phaser": "^3.52.0"
+  },
+  "devDependencies": {
+    "http-server": "^0.12.3"
   }
 }
