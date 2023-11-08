@@ -2,6 +2,11 @@
 
 ApplianceHell Game. The totally pointless star collecting game.
 
+## Play it now on itch
+
+- https://takesthebiscuit.itch.io/appliance-hell 
+
+
 ## Credits/open source
 - phaser https://phaser.io/ - opensource game engine in js [ A fast, free and fun open source framework for Canvas and WebGL powered browser games. ]
 - github.com/takesthebiscuit - project author

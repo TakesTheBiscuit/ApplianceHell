@@ -3,6 +3,7 @@
 
 <head>
     <script src="node_modules/phaser/dist/phaser-arcade-physics.min.js"></script>
+    <title>ApplianceHell Game</title>
 </head>
 
 <body>
@@ -26,19 +27,19 @@
             }
         };
 
-        var levels = 
-        [{
-            repeat: 0
-        },
-        {
-            repeat: 2
-        },
-        {
-            repeat: 7
-        },
-        {
-            repeat: 10
-        }];
+        var levels =
+            [{
+                repeat: 0
+            },
+            {
+                repeat: 2
+            },
+            {
+                repeat: 7
+            },
+            {
+                repeat: 10
+            }];
 
 
 
@@ -110,7 +111,7 @@
 
             // cursors = this.input.keyboard.createCursorKeys();
 
-            
+
             stars = this.physics.add.group({
                 key: 'star',
                 repeat: levels[level].repeat,
@@ -189,8 +190,8 @@
 
 
             nextLevel = () => {
-                                
-                if ((level + 1 ) == levels.length) {
+
+                if ((level + 1) == levels.length) {
                     // you win , let washer continue
                     scoreText.setText('Score: ' + score + ' - GAME OVER, YOU WIN');
                     gameOver = true; // should stop timer
@@ -220,7 +221,7 @@
 
                 }
 
-                
+
 
             }
 
@@ -235,9 +236,9 @@
                 timer += delta;
                 timerText.setText('Time: ' + Math.round(timer, 2));
             }
-            
 
-            
+
+
             if (hasStars > 0) {
                 starAnim = '-star';
             }
@@ -286,16 +287,16 @@
 
                 wm.anims.play('wash-cycle-anim', true);
 
-                setTimeout(function(){
+                setTimeout(function () {
                     wm.anims.stop();
-                    nextLevel();                    
+                    nextLevel();
                 }, 2200);
 
             }
 
         }
 
-       
+
     </script>
 
 </body>

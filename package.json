@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "http-server",
-    "release": "rm dist/itchio.zip | zip -r dist/itchio.zip * -x \".git/*\" -x \"package.json\" -x \"package-lock.json\" -x \"dist/.gitkeep\" -x \"dist/*\"",
+    "release": "find . -type f -name \"index.html\" -o -path \"./assets/*\" -o -name \"phaser-arcade-physics.min.js\" | zip -@ dist/itchio.zip",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "TakesTheBiscuit",
