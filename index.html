@@ -32,7 +32,10 @@
                 repeat: 0
             },
             {
-                repeat: 2
+                repeat: 1
+            },
+            {
+                repeat: 3
             },
             {
                 repeat: 7
@@ -68,6 +71,8 @@
         function preload() {
             this.load.image('sky', 'assets/img/sky.png');
             this.load.image('ground', 'assets/img/platform.png');
+            this.load.image('platform2', 'assets/img/platform2.png');
+
             this.load.image('star', 'assets/img/star.png');
 
             this.load.image('washing-machine', 'assets/img/washing-machine.png');
@@ -84,11 +89,9 @@
 
             platforms = this.physics.add.staticGroup();
 
+            // actual ground
             platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
-            platforms.create(600, 400, 'ground');
-            platforms.create(50, 250, 'ground');
-            platforms.create(750, 220, 'ground');
 
             player = this.physics.add.sprite(100, 200, 'dude');
             player.setBounce(0.2);
@@ -99,7 +102,7 @@
             wm.setCollideWorldBounds(true);
             wm.setImmovable(true);
 
-
+            generateAndAddPlatforms(platforms, 0);
 
             cursors = this.input.keyboard.addKeys(
                 {
@@ -216,6 +219,10 @@
 
                     });
 
+
+                    // pass existing platform (ground) into generator
+                    generateAndAddPlatforms(platforms, level);
+
                     this.physics.add.collider(stars, platforms);
                     this.physics.add.overlap(player, stars, collectStar, null, this);
 
@@ -296,6 +303,46 @@
 
         }
 
+        function generateAndAddPlatforms(platforms, complexityLevel) {
+
+
+            // some sensible constraints
+            // if you have platforms high than this
+            // then you need a platform AT this height to jump FROM
+            const minPlatform = [600, 400];
+            const extremeTopLeftPlatform = [0, 90];
+            const extremeTopLeftPlatformJumpBox = [180, 190];
+            const topLeftPlatform = [50, 250];
+
+            switch (complexityLevel) {
+                case 0:
+                    // top left
+                    platforms.create(topLeftPlatform[0], topLeftPlatform[1], 'ground');
+
+                    break;
+                case 1:
+                    // top right
+                    platforms.create(750, 220, 'ground');
+                    // assume player dropped to the machine to be at this point so 
+                    // give them a leg back up
+                    platforms.create(minPlatform[0], minPlatform[1], 'ground');
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    platforms.create(600, 400, 'ground');
+                    platforms.create(750, 220, 'ground').setScale(0.2).refreshBody();
+                    break;
+                case 4:
+                    // x top left
+                    platforms.create(extremeTopLeftPlatform[0], extremeTopLeftPlatform[1], 'platform2').setScale(0.2).refreshBody();
+                    platforms.create(extremeTopLeftPlatformJumpBox[0], extremeTopLeftPlatformJumpBox[1], 'ground').setScale(0.2).refreshBody();
+                    break;
+                default:
+                    console.error('How did we end up like this?');
+            }
+
+        }
 
     </script>
 
