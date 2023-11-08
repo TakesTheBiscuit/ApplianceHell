@@ -316,7 +316,6 @@
 
             switch (complexityLevel) {
                 case 0:
-
                     // top left
                     platforms.create(topLeftPlatform[0], topLeftPlatform[1], 'ground');
 
@@ -327,24 +326,17 @@
                     // assume player dropped to the machine to be at this point so 
                     // give them a leg back up
                     platforms.create(minPlatform[0], minPlatform[1], 'ground');
-                    //platforms.create(topLeftPlatform[0], topLeftPlatform[1], 'ground');
                     break;
                 case 2:
-                    //platforms.create(750, 220, 'ground');
-                    //platforms.create(topLeftPlatform[0], topLeftPlatform[1], 'platform2');
                     break;
                 case 3:
                     platforms.create(600, 400, 'ground');
                     platforms.create(750, 220, 'ground').setScale(0.2).refreshBody();
-
-                    //platforms.create(topLeftPlatform[0], topLeftPlatform[1], 'ground');
                     break;
                 case 4:
                     // x top left
                     platforms.create(extremeTopLeftPlatform[0], extremeTopLeftPlatform[1], 'platform2').setScale(0.2).refreshBody();
                     platforms.create(extremeTopLeftPlatformJumpBox[0], extremeTopLeftPlatformJumpBox[1], 'ground').setScale(0.2).refreshBody();
-                    //platforms.create(topLeftPlatform[0], topLeftPlatform[1], 'ground');
-                    //platforms.create(750, 220, 'ground').setScale(0.3).refreshBody();
                     break;
                 default:
                     console.error('How did we end up like this?');
