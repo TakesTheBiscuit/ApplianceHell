@@ -1,5 +1,5 @@
 # ApplianceHell
- ApplianceHell Game
+ApplianceHell Game
 
 ## Building
 
@@ -34,3 +34,7 @@
 - more machines
 - randomise the platform elements
 - gravity/jump mechanism is a bit odd
+
+## Issues
+
+- see github issue tracker
