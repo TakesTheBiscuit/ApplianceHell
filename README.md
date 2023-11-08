@@ -1,5 +1,11 @@
 # ApplianceHell
-ApplianceHell Game
+
+ApplianceHell Game. The totally pointless star collecting game.
+
+## Credits/open source
+- phaser https://phaser.io/ - opensource game engine in js [ A fast, free and fun open source framework for Canvas and WebGL powered browser games. ]
+- github.com/takesthebiscuit - project author
+- Inspiration: An ex-pat British guy called Rob who (once?) forgot to put the washing machine on
 
 ## Building
 
@@ -16,7 +22,9 @@ ApplianceHell Game
 
 ## Publishing
 
-- upload /assets and index.html to a webserver
+- npm run release
+- upload /dist/itchio.ziop to itch
+- or, copy assets directory and index.html including node_modules to a webserver (phaser required)
 
 ## Playing
 
