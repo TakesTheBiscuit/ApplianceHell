@@ -11,7 +11,7 @@
   "author": "TakesTheBiscuit",
   "license": "ISC",
   "dependencies": {
-    "phaser": "^3.52.0"
+    "phaser": "^3.53.0"
   },
   "devDependencies": {
     "http-server": "^0.12.3"
